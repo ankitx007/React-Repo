@@ -1,51 +1,70 @@
 import "./App.css";
+import Navbar from "./components/Navbar";
+import TextForm from "./components/TextForm";
+import About from "./components/About";
+import { useState } from "react";
 
 function App() {
+  const [mode, setMode] = useState("dark");
+
+  const toggleMode = () => {
+    if (mode === "light") {
+      setMode("dark");
+      document.body.classList.add("dark-mode");
+      const textAreaBox = document.getElementById(
+        "exampleFormControlTextarea1"
+      );
+      if (textAreaBox) {
+        textAreaBox.style.backgroundColor = "#343a40";
+        textAreaBox.style.color = "white";
+      }
+      const accordionItemsHeader =
+        document.querySelectorAll(".accordion-button");
+      accordionItemsHeader.forEach((item) => {
+        item.style.backgroundColor = "#343a40";
+        item.style.color = "white";
+      });
+      const accordionItems = document.querySelectorAll(".accordion-item");
+      accordionItems.forEach((item) => {
+        item.style.backgroundColor = "#343a40";
+        item.style.color = "white";
+      });
+    } else {
+      setMode("light");
+      const textAreaBox = document.getElementById(
+        "exampleFormControlTextarea1"
+      );
+      if (textAreaBox) {
+        textAreaBox.style.backgroundColor = "white";
+        textAreaBox.style.color = "black";
+      }
+      document.body.classList.remove("dark-mode");
+      const accordionItemsHeader =
+        document.querySelectorAll(".accordion-button");
+      accordionItemsHeader.forEach((item) => {
+        item.style.backgroundColor = "white";
+        item.style.color = "black";
+      });
+      const accordionItems = document.querySelectorAll(".accordion-item");
+      accordionItems.forEach((item) => {
+        item.style.backgroundColor = "white";
+        item.style.color = "black";
+      });
+    }
+  };
   return (
     <>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">
-            TextUtils
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">
-                  Home
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/">
-                  About
-                </a>
-              </li>
-            </ul>
-            <form class="d-flex" role="search">
-              <input
-                class="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              <button class="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-          </div>
-        </div>
-      </nav>
+      <Navbar title="Ankit's Navbar" mode={mode} toggleMode={toggleMode} />
+      <div className="container">
+        <TextForm
+          textAreaName="Add Info"
+          heading="Enter Your Info"
+          mode={mode}
+        />
+      </div>
+      <div className="container">
+        <About mode={mode} />
+      </div>
     </>
   );
 }
