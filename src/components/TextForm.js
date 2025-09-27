@@ -7,6 +7,13 @@ export default function TextForm(props) {
     let newText = document.getElementById("exampleFormControlTextarea1").value;
     newText = newText.toUpperCase();
     setText(newText);
+    props.showAlert({
+      message: "Converted to UPPERCASE",
+      type: "success",
+    });
+    setTimeout(() => {
+      props.showAlert("");
+    }, 3500);
   };
 
   return (
@@ -24,7 +31,12 @@ export default function TextForm(props) {
         <h2>Result is: {text}</h2>
         <p>
           <span style={{ fontWeight: "bold" }}>Words: </span>
-          {text.split(" ").length}
+          {
+            text
+              .trim()
+              .split(/\s+/)
+              .filter((element) => element.length !== 0).length
+          }
         </p>
         <p>
           <span style={{ fontWeight: "bold" }}>Characters: </span>

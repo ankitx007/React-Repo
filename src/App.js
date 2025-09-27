@@ -2,10 +2,13 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import TextForm from "./components/TextForm";
 import About from "./components/About";
+import Alert from "./components/Alert";
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 function App() {
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState("light");
+  const [alertMessage, setAlertMessage] = useState("");
 
   const toggleMode = () => {
     if (mode === "light") {
@@ -29,6 +32,13 @@ function App() {
         item.style.backgroundColor = "#343a40";
         item.style.color = "white";
       });
+      setAlertMessage({
+        message: "Dark mode has been enabled",
+        type: "success",
+      });
+      setTimeout(() => {
+        setAlertMessage("");
+      }, 3500);
     } else {
       setMode("light");
       const textAreaBox = document.getElementById(
@@ -50,22 +60,58 @@ function App() {
         item.style.backgroundColor = "white";
         item.style.color = "black";
       });
+      setAlertMessage({
+        message: "Light mode has been enabled",
+        type: "success",
+      });
+      setTimeout(() => {
+        setAlertMessage("");
+      }, 3500);
     }
+
+    const showAlert = (message, type) => {
+      setAlertMessage(message);
+      setTimeout(() => {
+        setAlertMessage({
+          message: message,
+          type: type,
+        });
+      }, 3500);
+    };
   };
   return (
-    <>
-      <Navbar title="Ankit's Navbar" mode={mode} toggleMode={toggleMode} />
-      <div className="container">
-        <TextForm
-          textAreaName="Add Info"
-          heading="Enter Your Info"
-          mode={mode}
-        />
+    <Router>
+      <div>
+        <Navbar title="Ankit's Navbar" mode={mode} toggleMode={toggleMode} />
+        <div className="container my-4">
+          <Alert alertMessage={alertMessage} />
+        </div>
+
+        <Routes>
+          <Route
+            path="/about"
+            element={
+              <div className="container my-4">
+                <About mode={mode} />
+              </div>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <div className="container my-4">
+                <TextForm
+                  textAreaName="Add Info"
+                  heading="Enter Your Info"
+                  showAlert={setAlertMessage}
+                  mode={mode}
+                />
+              </div>
+            }
+          />
+        </Routes>
       </div>
-      <div className="container">
-        <About mode={mode} />
-      </div>
-    </>
+    </Router>
   );
 }
 export default App;
